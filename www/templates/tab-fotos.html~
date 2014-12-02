@@ -1,0 +1,14 @@
+<ion-view title="Fotos">
+  <ion-content class="padding">
+
+    <button ng-click="getPhoto()" class="button icon ion-android-camera"></button>
+    
+    <div class="list">
+    	<a href="#" class="item item-avatar" ng-repeat="photo in photos">
+    		<img src="{{photo}}">		
+    		<p>img test</p>
+    	</a>
+    </div>
+
+  </ion-content>
+</ion-view>
