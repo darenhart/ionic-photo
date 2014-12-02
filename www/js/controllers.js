@@ -22,7 +22,6 @@ angular.module('starter.controllers', [])
 	$scope.newPhoto = function() {
 		Camera.newPicture().then(function(imageURI) {
 		  $scope.photos.push(imageURI);
-		  Photo.save(imageURI);
 		}, function(err) {
 		  console.err(err);
 		}, {
