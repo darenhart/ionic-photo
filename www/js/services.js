@@ -1,35 +1,32 @@
 angular.module('starter.services', ['ngResource'])
 
+
+
 .factory('Photo', function($http) {
 	return {
+		get: function
 		save: function(path) {
-			$http.post("http://udkk7ed3fff5.darenhart.koding.io:3000/api/photo/save", {path:path}).success(function (data) {
+			function convertImgToBase64(url, callback, outputFormat){
+				var canvas = document.createElement('CANVAS');
+				var ctx = canvas.getContext('2d');
+				var img = new Image;
+				img.crossOrigin = 'Anonymous';
+				img.onload = function(){
+					canvas.height = img.height;
+					canvas.width = img.width;
+					ctx.drawImage(img,0,0);
+					var dataURL = canvas.toDataURL(outputFormat || 'image/png');
+					callback.call(this, dataURL);
+					// Clean up
+					canvas = null; 
+				};
+				img.src = url;
+			}
+			convertImgToBase64(path, function(base64img){
+				$http.post("http://udkk7ed3fff5.darenhart.koding.io:3000/api/photo/save", {img:base64img}).success(function (data) {
 
+				});
 			});
-			/*
-		function convertImgToBase64(url, callback, outputFormat){
-			var canvas = document.createElement('CANVAS');
-			var ctx = canvas.getContext('2d');
-			var img = new Image;
-			img.crossOrigin = 'Anonymous';
-			img.onload = function(){
-				canvas.height = img.height;
-				canvas.width = img.width;
-				ctx.drawImage(img,0,0);
-				var dataURL = canvas.toDataURL(outputFormat || 'image/png');
-				callback.call(this, dataURL);
-				// Clean up
-				canvas = null; 
-			};
-			img.src = url;
-		}
-
-		convertImgToBase64(result, function(base64img){
-			$http.post('http://udkk7ed3fff5.darenhart.koding.io:3000/api/contact/get');
-
-			console.log(base64img);
-		});
-		*/
 		}
 	}
   }
