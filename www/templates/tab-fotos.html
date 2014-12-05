@@ -4,9 +4,9 @@
     <button ng-click="newPhoto()" class="button icon ion-android-camera"></button>
     
     <div class="list">
-    	<a href="#" class="item item-avatar" ng-repeat="photo in photos">
-    		<img src="{{photo}}">		
-    		<p>img test</p>
+		<a href="#/tab/fotos/{{photo._id}}" class="item item-avatar" ng-repeat="photo in photos | orderBy:order">
+			<img src="{{photo.img}}">		
+    		<p>foto</p>
     	</a>
     </div>
 

@@ -15,21 +15,31 @@ angular.module('starter.controllers', [])
 })
 
 .controller('FotosCtrl', function($scope, Camera, Photo) {
-	$scope.photos = [];
 
-	var photos = Camera.getPictures();
+	$scope.order = '-_id';
+
+	Photo.get().success(function(data) {
+		$scope.photos = data;
+	});
 
 	$scope.newPhoto = function() {
 		Camera.newPicture().then(function(imageURI) {
-		  $scope.photos.push(imageURI);
+		  $scope.photos.push({img:imageURI});
 		}, function(err) {
 		  console.err(err);
 		}, {
-		  quality: 40,
-		  targetWidth: 320,
-		  targetHeight: 320,
+		  quality: 60,
+		  targetWidth: 200,
+		  targetHeight: 200,
 		  saveToPhotoAlbum: false
 		});
 	}
 
-});
+})
+
+.controller('FotoDetailCtrl', function($scope, $stateParams, Photo) {
+	Photo.get($stateParams.fotoId).success(function(data) {
+		$scope.photo = data; 
+	});
+})
+;

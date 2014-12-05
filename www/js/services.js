@@ -1,11 +1,19 @@
-angular.module('starter.services', ['ngResource'])
+angular.module('starter.services', ['ngResource',])
 
 
 
-.factory('Photo', function($http) {
-	return {
-		get: function
-		save: function(path) {
+.factory('Photo', 
+	function($http) {
+
+		var Photo = {};
+		var urlBase = 'http://udkk7ed3fff5.darenhart.koding.io:3000/api/photo/';
+
+		Photo.get =  function(id) {
+			id = id || '';
+			return $http.get(urlBase + id);
+		};
+
+		Photo.save = function(path) {
 			function convertImgToBase64(url, callback, outputFormat){
 				var canvas = document.createElement('CANVAS');
 				var ctx = canvas.getContext('2d');
@@ -23,13 +31,14 @@ angular.module('starter.services', ['ngResource'])
 				img.src = url;
 			}
 			convertImgToBase64(path, function(base64img){
-				$http.post("http://udkk7ed3fff5.darenhart.koding.io:3000/api/photo/save", {img:base64img}).success(function (data) {
+				$http.post(urlBase, {img:base64img}).success(function (data) {
 
 				});
 			});
 		}
+
+		return Photo;
 	}
-  }
 )
 
 .factory('Camera', ['$q', 'Photo', function($q, Photo) {
@@ -57,7 +66,7 @@ angular.module('starter.services', ['ngResource'])
 
 .factory('Friends', ['$resource', 
   function($resource) {
-    return $resource('http://udkk7ed3fff5.darenhart.koding.io:3000/api/contact/get', {}, {
+    return $resource('http://udkk7ed3fff5.darenhart.koding.io:3000/api/contact/', {}, {
       query: {method:'GET', isArray:true}
     });
   }]);

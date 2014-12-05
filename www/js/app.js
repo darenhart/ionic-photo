@@ -75,6 +75,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           controller: 'FotosCtrl'
         }
       }
+    })
+    .state('tab.foto-detail', {
+	  url: '/fotos/:fotoId',
+      views: {
+        'tab-fotos': {
+          templateUrl: 'templates/foto-detail.html',
+          controller: 'FotoDetailCtrl'
+        }
+      }
     });
 
   // if none of the above states are matched, use this as the fallback
