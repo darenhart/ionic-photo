@@ -27,11 +27,6 @@ angular.module('starter.controllers', [])
 		  $scope.photos.push({img:imageURI});
 		}, function(err) {
 		  console.err(err);
-		}, {
-		  quality: 60,
-		  targetWidth: 200,
-		  targetHeight: 200,
-		  saveToPhotoAlbum: false
 		});
 	}
 

@@ -1,7 +1,7 @@
 angular.module('starter.services', ['ngResource',])
 
 
-
+// send and get photo to the server
 .factory('Photo', 
 	function($http) {
 
@@ -13,46 +13,35 @@ angular.module('starter.services', ['ngResource',])
 			return $http.get(urlBase + id);
 		};
 
-		Photo.save = function(path) {
-			function convertImgToBase64(url, callback, outputFormat){
-				var canvas = document.createElement('CANVAS');
-				var ctx = canvas.getContext('2d');
-				var img = new Image;
-				img.crossOrigin = 'Anonymous';
-				img.onload = function(){
-					canvas.height = img.height;
-					canvas.width = img.width;
-					ctx.drawImage(img,0,0);
-					var dataURL = canvas.toDataURL(outputFormat || 'image/png');
-					callback.call(this, dataURL);
-					// Clean up
-					canvas = null; 
-				};
-				img.src = url;
-			}
-			convertImgToBase64(path, function(base64img){
-				$http.post(urlBase, {img:base64img}).success(function (data) {
-
-				});
+		// send photo to the server
+		Photo.save = function(imageBase64) {
+			$http.post(urlBase, {img:imageBase64}).success(function (data) {
 			});
+			return;
 		}
 
 		return Photo;
 	}
 )
 
+// open camera, take a photo and send to the server
 .factory('Camera', ['$q', 'Photo', function($q, Photo) {
   return {
     newPicture: function(options) {
       var q = $q.defer();
-      navigator.camera.getPicture(function(result) {
+      navigator.camera.getPicture(function(imageData) {
+        var imageBase64 = 'data:image/png;base64,'+imageData;
 		// send image to server
-		Photo.save(result);
-
-        q.resolve(result);
+		Photo.save(imageBase64);
+        q.resolve(imageBase64);
       }, function(err) {
         q.reject(err);
-      }, options);
+      }, {
+		  quality:40,
+		  targetWidth:150,
+		  targetHeight:150,
+		  destinationType: Camera.DestinationType.DATA_URL
+	  });
       
       return q.promise;
     },
