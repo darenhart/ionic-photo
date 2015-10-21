@@ -6,7 +6,7 @@ angular.module('starter.services', ['ngResource',])
 	function($http) {
 
 		var Photo = {};
-		var urlBase = 'http://udkk7ed3fff5.darenhart.koding.io:3000/api/photo/';
+		var urlBase = 'http://ec2-54-200-114-157.us-west-2.compute.amazonaws.com:3001/api/photo/';
 
 		Photo.get =  function(id) {
 			id = id || '';
@@ -55,7 +55,7 @@ angular.module('starter.services', ['ngResource',])
 
 .factory('Friends', ['$resource', 
   function($resource) {
-    return $resource('http://udkk7ed3fff5.darenhart.koding.io:3000/api/contact/', {}, {
+    return $resource('http://ec2-54-200-114-157.us-west-2.compute.amazonaws.com:3001/api/contact/', {}, {
       query: {method:'GET', isArray:true}
     });
   }]);
