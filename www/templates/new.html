@@ -1,0 +1,26 @@
+<ion-view view-title="Doar">
+  <ion-content>
+    <div class="list">
+	  <label class="item item-icon-left" >
+			<img    ng-show="item.img" ng-click="newPhoto()" src="{{item.img}}">		
+      <button ng-hide="item.img" ng-click="newPhoto()" class="button button-light">
+        <i class="icon ion-android-camera"></i>
+      </button>
+	  </label>
+    <form ng-submit="save()">
+        <label class="item item-input">
+          <input type="text" ng-model="item.name" placeholder="Nome">
+        </label>
+        <label class="item item-input">
+          <input type="text" ng-model="item.description" placeholder="Descrição">
+        </label>
+        <label class="item item-input">
+          <input type="text" ng-model="item.category" placeholder="Categoria">
+        </label>
+        <label class="item">
+          <input type="submit" class="button button-block button-positive" value="Doar" />
+        </label>
+    </form>
+	</div>
+  </ion-content>
+</ion-view>
