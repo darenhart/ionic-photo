@@ -1,40 +1,79 @@
+
+var SERVER = 'http://ec2-54-200-114-157.us-west-2.compute.amazonaws.com:3001';
+//var SERVER = 'http://localhost:3000';
+
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
-	$scope.online = navigator.onLine;
-	$scope.plat = navigator.platform;
+.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+})
+
+.controller('UserNewCtrl', function($scope, $http, $location) {
+  $scope.user = {};
+
+  $scope.save = function() {
+    $http.post(SERVER+'/api/user', $scope.user).success(function(data) {
+      $scope.user = {};
+      $location.path('/app/home');
+    });
+  };	
+
 
 })
 
-.controller('FriendsCtrl', function($scope, $http, Friends) {
- 	$scope.friends = Friends.query();
+.controller('UserLoginCtrl', function($scope, $http) {
+  $scope.user = {};
+
+  $scope.login = function() {
+    $http.post(SERVER+'/api/user', $scope.user).success(function(data) {
+      $scope.user = {};
+    });
+  };	
+
 })
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
-})
+.controller('NewCtrl', function($scope, $http, $location, $ionicLoading, Camera) {
+  $scope.item = {};
 
-.controller('FotosCtrl', function($scope, Camera, Photo) {
+  $scope.save = function() {
+    $ionicLoading.show();
 
-	$scope.order = '-_id';
+    $http.post(SERVER+'/api/item', $scope.item).success(function(data) {
+      $ionicLoading.hide();
 
-	Photo.get().success(function(data) {
-		$scope.photos = data;
-	});
+      $scope.item = {};
+      $location.path('/app/items');
+    });
+  };
 
 	$scope.newPhoto = function() {
 		Camera.newPicture().then(function(imageURI) {
-		  $scope.photos.push({img:imageURI});
+      console.log(imageURI);
+		  $scope.item.img = imageURI;
 		}, function(err) {
-		  console.err(err);
+		  console.log(err);
 		});
-	}
+	};
 
+  $scope.newPhoto();
+})	
+
+.controller('ItemsCtrl', function($scope, $http, $ionicLoading) {
+  $scope.items = {};
+
+  $ionicLoading.show();
+
+  $http.get(SERVER+'/api/item').success(function(data) {
+    $ionicLoading.hide();
+    $scope.items = data;
+  });
 })
 
-.controller('FotoDetailCtrl', function($scope, $stateParams, Photo) {
-	Photo.get($stateParams.fotoId).success(function(data) {
-		$scope.photo = data; 
-	});
-})
-;
+.controller('ItemCtrl', function($scope, $http, $location) {
+  var parms = $location.path();
+  var itemId = parms.replace(/^.*[\\\/]/, '')
+  $scope.item = {};
+
+  $http.get(SERVER+'/api/item/'+itemId).success(function(data) {
+    $scope.item = data;
+  });
+});
